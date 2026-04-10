@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Limar - Senin İçin</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@300;400;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #ff6b9d;
+            overflow-x: hidden;
+            color: white;
+        }
+
+        /* Floating Hearts Background */
+        .hearts-container {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 20px;
+            color: rgba(255, 255, 255, 0.3);
+            animation: float 10s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(100vh) scale(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) scale(0) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            padding: 20px;
+        }
+
+        .hero h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 5rem;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.2);
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .hero .subtitle {
+            font-size: 1.3rem;
+            margin-bottom: 40px;
+            opacity: 0.9;
+            animation: fadeIn 2s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Compliment Cards */
+        .compliments-section {
+            padding: 80px 20px;
+            background: white;
+            color: #333;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-title {
+            text-align: center;
+            font-family: 'Dancing Script', cursive;
+            font-size: 3rem;
+            color: #ff6b9d;
+            margin-bottom: 50px;
+        }
+
+        .cards-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            padding: 0 20px;
+        }
+
+        .compliment-card {
+            background: linear-gradient(135deg, #ff6b9d 0%, #c44569 100%);
+            color: white;
+            padding: 40px 30px;
+            border-radius: 20px;
+            text-align: center;
+            transform: translateY(50px);
+            opacity: 0;
+            transition: all 0.5s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            cursor: pointer;
+        }
+
+        .compliment-card.visible {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .compliment-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .compliment-card .icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .compliment-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            font-family: 'Dancing Script', cursive;
+        }
+
+        .compliment-card p {
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* Proposal Section */
+        .proposal-section {
+            min-height: 100vh;
+            background: #c44569;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .proposal-container {
+            max-width: 600px;
+            text-align: center;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            padding: 60px 40px;
+            border-radius: 30px;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+
+        .proposal-text {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            line-height: 1.4;
+            min-height: 150px;
+        }
+
+        .typing-cursor {
+            display: inline-block;
+            width: 3px;
+            height: 40px;
+            background: white;
+            animation: blink 1s infinite;
+            vertical-align: middle;
+            margin-left: 5px;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 40px;
+        }
+
+        .btn {
+            padding: 15px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+        }
+
+        .btn-yes {
+            background: white;
+            color: #ff6b9d;
+        }
+
+        .btn-yes:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .btn-no {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+            position: relative;
+        }
+
+        /* Moving No Button */
+        .btn-no:hover {
+            animation: runAway 0.5s ease;
+        }
+
+        @keyframes runAway {
+            0% { transform: translate(0, 0); }
+            25% { transform: translate(50px, -30px); }
+            50% { transform: translate(-30px, 50px); }
+            75% { transform: translate(30px, 30px); }
+            100% { transform: translate(0, 0); }
+        }
+
+        /* Success Message */
+        .success-message {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 107, 157, 0.95);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .success-message.active {
+            display: flex;
+        }
+
+        .success-heart {
+            font-size: 8rem;
+            animation: heartbeat 1.5s infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            25% { transform: scale(1.1); }
+            50% { transform: scale(1); }
+            75% { transform: scale(1.1); }
+        }
+
+        .success-text {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3rem;
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        /* Footer */
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .creator {
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+
+        .creator span {
+            color: #ff6b9d;
+            font-weight: 700;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 3.5rem; }
+            .proposal-text { font-size: 1.8rem; }
+            .section-title { font-size: 2.5rem; }
+            .cards-container { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Hearts Background -->
+    <div class="hearts-container" id="heartsContainer"></div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Limar</h1>
+        <p class="subtitle">Seni tanıdığıma çok ama çok memnunum...</p>
+    </section>
+
+    <!-- Compliments Section -->
+    <section class="compliments-section">
+        <h2 class="section-title">Sana Söylemek İstediklerim</h2>
+        <div class="cards-container">
+            <div class="compliment-card">
+                <span class="icon">✨</span>
+                <h3>Gözlerin</h3>
+                <p>Gözlerine baktığımda içimi bir huzur kaplıyor. Sanki tüm dünya orada duruyor.</p>
+            </div>
+            <div class="compliment-card">
+                <span class="icon">😊</span>
+                <h3>Gülüşün</h3>
+                <p>Gülüşün benim en sevdiğim melodim. Her duyduğumda içim ısınıyor.</p>
+            </div>
+            <div class="compliment-card">
+                <span class="icon">💭</span>
+                <h3>Zekan</h3>
+                <p>Konuşmalarımız, düşüncelerin, bakış açın... Hepsi çok etkileyici.</p>
+            </div>
+            <div class="compliment-card">
+                <span class="icon">🌟</span>
+                <h3>Varlığın</h3>
+                <p>Sadece var olman bile etrafındaki her şeyi güzelleştiriyor.</p>
+            </div>
+            <div class="compliment-card">
+                <span class="icon">🤗</span>
+                <h3>Samimiyetin</h3>
+                <p>İçtenliğin, dürüstlüğün... Bu kadar gerçek olmak çok nadide.</p>
+            </div>
+            <div class="compliment-card">
+                <span class="icon">💖</span>
+                <h3>Kalbin</h3>
+                <p>Yüreğinin güzelliği yüzüne yansımış. İyi biri olduğun belli.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Proposal Section -->
+    <section class="proposal-section">
+        <div class="proposal-container">
+            <div class="proposal-text" id="proposalText"></div>
+            <div class="btn-group" id="btnGroup">
+                <button class="btn btn-yes" onclick="showSuccess()">Evet 💕</button>
+                <button class="btn btn-no" id="noBtn">Hayır</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Success Message -->
+    <div class="success-message" id="successMessage">
+        <div class="success-heart">💗</div>
+        <div class="success-text">Biliyordum!<br>Şimdi resmi olarak<br>yarı arkadaş yarı aşk olduk 😊😂</div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p class="creator"><span>@emrezamir</span> tarafından gönülden hazırlandı</p>
+    </footer>
+
+    <script>
+        // Create Floating Hearts
+        const heartsContainer = document.getElementById('heartsContainer');
+        const heartSymbols = ['💕', '💖', '💗', '💓', '💝', '♥', '❤', '💘'];
+        
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.textContent = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.animationDuration = (Math.random() * 5 + 8) + 's';
+            heart.style.animationDelay = Math.random() * 5 + 's';
+            heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+            heartsContainer.appendChild(heart);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, 15000);
+        }
+
+        for (let i = 0; i < 20; i++) {
+            setTimeout(createHeart, i * 300);
+        }
+        setInterval(createHeart, 2000);
+
+        // Scroll Animation for Cards
+        const cards = document.querySelectorAll('.compliment-card');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                    }, index * 100);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        cards.forEach(card => observer.observe(card));
+
+        // Typing Effect for Proposal
+        const proposalText = document.getElementById('proposalText');
+        const message = "Limar, seninle daha fazla vakit geçirmek, daha derin konuşmalar yapmak, belki de sadece 'arkadaş' olmaktan bir adım öteye gitmek istiyorum... Benimle olur musun?";
+        let index = 0;
+
+        function typeText() {
+            if (index < message.length) {
+                proposalText.innerHTML = message.substring(0, index + 1) + '<span class="typing-cursor"></span>';
+                index++;
+                setTimeout(typeText, 50);
+            } else {
+                proposalText.innerHTML = message;
+            }
+        }
+
+        const textObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && index === 0) {
+                    typeText();
+                }
+            });
+        }, { threshold: 0.5 });
+
+        textObserver.observe(proposalText);
+
+        // Moving No Button
+        const noBtn = document.getElementById('noBtn');
+        noBtn.addEventListener('mouseover', () => {
+            const x = Math.random() * 200 - 100;
+            const y = Math.random() * 200 - 100;
+            noBtn.style.transform = `translate(${x}px, ${y}px)`;
+        });
+
+        // Show Success
+        function showSuccess() {
+            document.getElementById('successMessage').classList.add('active');
+            document.getElementById('btnGroup').style.display = 'none';
+            
+            // Create celebration hearts
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.style.position = 'fixed';
+                    heart.style.left = Math.random() * 100 + '%';
+                    heart.style.top = '100%';
+                    heart.style.fontSize = (Math.random() * 30 + 20) + 'px';
+                    heart.textContent = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+                    heart.style.animation = 'float 3s ease-out forwards';
+                    heart.style.zIndex = '1001';
+                    document.body.appendChild(heart);
+                    
+                    setTimeout(() => heart.remove(), 3000);
+                }, i * 50);
+            }
+        }
+
+        // Smooth Scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
